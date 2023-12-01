@@ -77,7 +77,7 @@ def solve_part2_regex(data: list[str]) -> int:
         "nine": "9",
     }
     total = 0
-    pattern = r"(\d|one|two|three|four|five|six|seven|eight|nine)"
+    pattern = r"(?=(\d|one|two|three|four|five|six|seven|eight|nine))"
     search = re.compile(pattern)
 
     for line in data:
@@ -111,6 +111,12 @@ def main():
     print(solve_part2(data))
     print(f"Solution Day {day}, Part2, but with RegEx!")
     print(solve_part2_regex(data))
+
+    for line in data:
+        if solve_part2([line]) != solve_part2_regex([line]):
+            print(solve_part2([line]))
+            print(solve_part2_regex([line]))
+            print(line)
 
 
 if __name__ == "__main__":
