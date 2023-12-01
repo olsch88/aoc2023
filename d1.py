@@ -37,7 +37,7 @@ def solve_part2(data: list[str]) -> int:
     for line in data:
         min_index = 999
         first = ""
-        max_index = 999
+        max_index = -1
         last = ""
         for number in digits_dict.keys():
             try:
@@ -47,8 +47,7 @@ def solve_part2(data: list[str]) -> int:
             except ValueError:
                 pass
             try:
-                num = number[::-1]
-                if (i := line[::-1].index(num)) < max_index:
+                if (i := line.rindex(number)) > max_index:
                     max_index = i
                     last = number
             except ValueError:
