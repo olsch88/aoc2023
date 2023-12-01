@@ -1,3 +1,6 @@
+import re
+
+
 def solve_part1(data: list[str]) -> int:
     total = 0
     c: str
@@ -40,7 +43,6 @@ def solve_part2(data: list[str]) -> int:
         for number in digits_dict.keys():
             try:
                 if (i := line.index(number)) < min_index:
-                    print(f"new_fist index {i} {number}")
                     min_index = i
                     first = number
             except ValueError:
@@ -48,20 +50,29 @@ def solve_part2(data: list[str]) -> int:
             try:
                 num = number[::-1]
                 if (i := line[::-1].index(num)) < max_index:
-                    print(f"new_last index {i} {number}")
                     max_index = i
                     last = number
             except ValueError:
                 pass
 
-        print(first)
-        print(last)
-        new_line = line.replace(first, digits_dict.get(first, ""), 1)
+        new_line = line
+        for number_str in digits_dict.keys():
+            new_line = new_line.replace(number_str, number_str + number_str)
+
+        new_line = new_line.replace(first, digits_dict.get(first, ""), 1)
         new_line = new_line.replace(last, digits_dict.get(last, ""))
         new_list.append(new_line)
-        print(new_line)
 
     return solve_part1(new_list)
+
+
+def solve_part2_regex(data: list[str]) -> int:
+    pattern = r"(\d|one|two|three|four|five|six|seven|eight|nine)"
+    search = re.compile(pattern)
+
+    result = search.findall("96three53bzrhpg69")
+    print(result)
+    return 0
 
 
 def read_data(input_file: str):
@@ -75,18 +86,13 @@ def main():
     day = 1
 
     data = read_data(f"d{day}_input.txt")
-    # data = read_data("d1_p2_sample.txt")
-    data = read_data("special.txt")
 
     print(f"Solution Day {day}, Part1:")
     print(solve_part1(data))
     print(f"Solution Day {day}, Part2:")
     print(solve_part2(data))
+    solve_part2_regex(data)
 
 
 if __name__ == "__main__":
     main()
-    # string = "abscece"
-    # search = "xxxx"
-    # ind = string.index(search)
-    # print(ind)
