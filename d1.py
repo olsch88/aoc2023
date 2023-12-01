@@ -67,12 +67,32 @@ def solve_part2(data: list[str]) -> int:
 
 
 def solve_part2_regex(data: list[str]) -> int:
+    digits_dict = {
+        "one": "1",
+        "two": "2",
+        "three": "3",
+        "four": "4",
+        "five": "5",
+        "six": "6",
+        "seven": "7",
+        "eight": "8",
+        "nine": "9",
+    }
+    total = 0
     pattern = r"(\d|one|two|three|four|five|six|seven|eight|nine)"
     search = re.compile(pattern)
 
-    result = search.findall("96three53bzrhpg69")
-    print(result)
-    return 0
+    for line in data:
+        result = search.findall(line)
+        subtotal = int(
+            digits_dict.get(result[0], result[0])
+            + digits_dict.get(result[-1], result[-1])
+        )
+        # print(result)
+        # print(subtotal)
+        total += subtotal
+
+    return total
 
 
 def read_data(input_file: str):
@@ -91,7 +111,7 @@ def main():
     print(solve_part1(data))
     print(f"Solution Day {day}, Part2:")
     print(solve_part2(data))
-    solve_part2_regex(data)
+    print(solve_part2_regex(data))
 
 
 if __name__ == "__main__":
