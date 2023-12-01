@@ -47,9 +47,8 @@ def solve_part2(data: list[str]) -> int:
                 pass
             try:
                 num = number[::-1]
-                leng = len(line)
                 if (i := line[::-1].index(num)) < max_index:
-                    print(f"new_last index {leng-i} {number}")
+                    print(f"new_last index {i} {number}")
                     max_index = i
                     last = number
             except ValueError:
