@@ -39,7 +39,6 @@ def solve_part2(data: list[str]) -> int:
         first = ""
         max_index = 999
         last = ""
-        print(line)
         for number in digits_dict.keys():
             try:
                 if (i := line.index(number)) < min_index:
@@ -111,6 +110,7 @@ def main():
     print(solve_part1(data))
     print(f"Solution Day {day}, Part2:")
     print(solve_part2(data))
+    print(f"Solution Day {day}, Part2, but with RegEx!")
     print(solve_part2_regex(data))
 
 
