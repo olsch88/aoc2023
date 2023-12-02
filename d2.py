@@ -37,7 +37,15 @@ def solve_part1(data: list[str]) -> int:
 
 
 def solve_part2(data: list[str]) -> int:
-    return 0
+    power_sum = 0
+    for line in data:
+        power_sum += (
+            max(get_color_count(line, "blue"))
+            * max(get_color_count(line, "green"))
+            * max(get_color_count(line, "red"))
+        )
+
+    return power_sum
 
 
 def read_data(input_file: str):
