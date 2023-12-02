@@ -112,12 +112,6 @@ def main():
     print(f"Solution Day {day}, Part2, but with RegEx!")
     print(solve_part2_regex(data))
 
-    for line in data:
-        if solve_part2([line]) != solve_part2_regex([line]):
-            print(solve_part2([line]))
-            print(solve_part2_regex([line]))
-            print(line)
-
 
 if __name__ == "__main__":
     main()
