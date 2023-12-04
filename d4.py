@@ -1,10 +1,9 @@
 import re
 
 
-def solve_part1(data: list[str]):
-    sum_of_scores = 0
-
-    for line in data:
+def get_wins(data: list[str]) -> dict[int, int]:
+    wins = dict()
+    for i, line in enumerate(data, start=1):
         winning_numbers = set()
         my_numbers = set()
         new_line = line.replace("  ", " ")
@@ -16,14 +15,32 @@ def solve_part1(data: list[str]):
         for num in numbers:
             my_numbers.add(int(num))
         len_intersect = len(winning_numbers.intersection(my_numbers))
-        if len_intersect > 0:
-            sum_of_scores += 2 ** (len_intersect - 1)
+
+        wins[i] = len_intersect
+    return wins
+
+
+def solve_part1(data: list[str]):
+    sum_of_scores = 0
+
+    wins = get_wins(data)
+    for num, win in wins.items():
+        if win > 0:
+            sum_of_scores += 2 ** (win - 1)
 
     return sum_of_scores
 
 
-def solve_part2(data: list[str]):
-    return 0
+def solve_part2(data: list[str]) -> int:
+    card_counts = {i: 1 for i in range(1, len(data) + 1)}
+    wins = get_wins(data)
+    for i, _ in enumerate(data, start=1):
+        for w in range(wins[i]):
+            card_counts[i + w + 1] += card_counts[i]
+
+    scratchcards = sum(card_counts.values())
+
+    return scratchcards
 
 
 def read_data(input_file: str):
@@ -36,7 +53,7 @@ def read_data(input_file: str):
 def main():
     day = 4
 
-    data = read_data(f"d{day}_sample.txt")
+    # data = read_data(f"d{day}_sample.txt")
     data = read_data(f"d{day}_input.txt")
 
     print(f"Solution Day {day}, Part1:")
