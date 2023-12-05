@@ -1,3 +1,6 @@
+import itertools
+
+
 def get_mapping(data: list[str]):
     mappings: list[list[str]]
     mappings = []
@@ -31,25 +34,50 @@ def process_mapping(mapping: list[str], start_value: int) -> int:
     return start_value
 
 
+def get_seed_location(seed: int, mappings) -> int:
+    next_value = seed
+    # print(f"{seed} maps to ", end=" ")
+    for mapping in mappings:
+        next_value = process_mapping(mapping, next_value)
+        # print(f"{next_value} maps to ", end=" ")
+    # print()
+    return next_value
+
+
 def solve_part1(data: list[str]) -> int:
     mappings = get_mapping(data)
     seeds = get_seeds(data)
     min_location = 99999999999
 
     for seed in seeds:
-        next_value = seed
-        print(f"{seed} maps to ", end=" ")
-        for mapping in mappings:
-            next_value = process_mapping(mapping, next_value)
-            print(f"{next_value} maps to ", end=" ")
-        print()
-        if next_value < min_location:
-            min_location = next_value
+        location = get_seed_location(seed, mappings)
+        if location < min_location:
+            min_location = location
     return min_location
 
 
 def solve_part2(data: list[str]) -> int:
-    return 0
+    mappings = get_mapping(data)
+    seeds = get_seeds(data)
+    min_location = 99999999999
+
+    for i in range(0, len(seeds) - 1, 2):
+        for s in range(seeds[i], seeds[i] + seeds[i + 1]):
+            location = get_seed_location(s, mappings)
+            if location < min_location:
+                min_location = location
+    return min_location
+
+    # for seed in seeds:
+    #     next_value = seed
+    #     print(f"{seed} maps to ", end=" ")
+    #     for mapping in mappings:
+    #         next_value = process_mapping(mapping, next_value)
+    #         print(f"{next_value} maps to ", end=" ")
+    #     print()
+    #     if next_value < min_location:
+    #         min_location = next_value
+    # return min_location
 
 
 def read_data(input_file: str):
