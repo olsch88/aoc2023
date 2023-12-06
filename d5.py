@@ -91,7 +91,7 @@ def main():
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part2:")
-    # print(solve_part2(data))
+    print(solve_part2(data))
     print(f"Time for part 2: {(time.perf_counter_ns()-start_time)/1000} ms")
 
 
