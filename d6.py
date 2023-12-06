@@ -30,8 +30,6 @@ def generate_input_part2(data: list[str]) -> dict[str, int]:
     distances = [i for i in data[1].split(":")[1].split() if i.isdigit()]
     times = int("".join(times))
     distances = int("".join(distances))
-    print(times)
-    print(distances)
 
     return {"Time": times, "Distance": distances}
 
