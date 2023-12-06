@@ -38,11 +38,17 @@ def solve_part1(data: list[str]):
     records = generate_input(data)
     result = 1
     for record in records:
-        count = 0
+        lower_border = 0
+        upper_border = 0
         for duration in range(0, record["Time"]):
             if get_distance(record["Time"], duration) > record["Distance"]:
-                count += 1
-        result *= count
+                lower_border = duration
+                break
+        for duration in range(record["Time"], 0, -1):
+            if get_distance(record["Time"], duration) > record["Distance"]:
+                upper_border = duration
+                break
+        result *= upper_border - lower_border + 1
 
     return result
 
@@ -50,12 +56,18 @@ def solve_part1(data: list[str]):
 def solve_part2(data: list[str]):
     record = generate_input_part2(data)
 
-    count = 0
+    lower_border = 0
+    upper_border = 0
     for duration in range(0, record["Time"]):
         if get_distance(record["Time"], duration) > record["Distance"]:
-            count += 1
+            lower_border = duration
+            break
+    for duration in range(record["Time"], 0, -1):
+        if get_distance(record["Time"], duration) > record["Distance"]:
+            upper_border = duration
+            break
 
-    return count
+    return upper_border - lower_border + 1
 
 
 def read_data(input_file: str):
