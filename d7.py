@@ -37,36 +37,38 @@ class Hand:
         self.cards = cards
         self.hand_type: HandType = get_hand_type(cards)
 
-    def __eq__(self, other: "Hand") -> bool:
-        if self.hand_type != other.hand_type:
-            print(self.hand_type, other.hand_type)
-            return False
-        for a, b in zip(self.cards, other.cards):
-            if CARDVALUES[a] != CARDVALUES[b]:
-                return False
-        return True
+    # def __eq__(self, other: "Hand") -> bool:
+    #     if self.hand_type != other.hand_type:
+    #         print(self.hand_type, other.hand_type)
+    #         return False
+    #     for a, b in zip(self.cards, other.cards):
+    #         if CARDVALUES[a] != CARDVALUES[b]:
+    #             return False
+
+    #     return True
 
     def __gt__(self, other: "Hand") -> bool:
-        print(self.hand_type > other.hand_type)
         if self.hand_type > other.hand_type:
-            print(self.hand_type, other.hand_type)
             return True
         elif self.hand_type < other.hand_type:
             return False
         for a, b in zip(self.cards, other.cards):
             if CARDVALUES[a] > CARDVALUES[b]:
                 return True
+            if CARDVALUES[a] < CARDVALUES[b]:
+                return False
         return False
 
     def __lt__(self, other: "Hand") -> bool:
         if self.hand_type < other.hand_type:
-            print(self.hand_type, other.hand_type)
             return True
         elif self.hand_type > other.hand_type:
             return False
         for a, b in zip(self.cards, other.cards):
             if CARDVALUES[a] < CARDVALUES[b]:
                 return True
+            if CARDVALUES[a] > CARDVALUES[b]:
+                return False
         return False
 
     def __hash__(self) -> int:
@@ -110,7 +112,6 @@ def solve_part1(data: list[str]):
     for line in data:
         cards, bid = line.split()
         hands.append({"hand": Hand(cards), "bid": bid})
-    print(hands)
     hands = sorted(hands, key=lambda c: c["hand"])
     total_winnings = 0
     for rank, hand in enumerate(hands, start=1):
@@ -144,7 +145,7 @@ def test_hand_types():
 
 
 def test_compare_hands():
-    assert Hand("AAAAA") == Hand("AAAAA")
+    # assert Hand("AAAAA") == Hand("AAAAA")
     assert Hand("AAAAA") > Hand("AKQJT")
     assert Hand("KKKKK") < Hand("AAAAA")
     assert Hand("KKK22") > Hand("AAKK2")
