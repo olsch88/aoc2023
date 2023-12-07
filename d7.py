@@ -39,23 +39,31 @@ class Hand:
 
     def __eq__(self, other: "Hand") -> bool:
         if self.hand_type != other.hand_type:
+            print(self.hand_type, other.hand_type)
             return False
         for a, b in zip(self.cards, other.cards):
             if CARDVALUES[a] != CARDVALUES[b]:
                 return False
         return True
 
-    # def __gt__(self, other: "Hand") -> bool:
-    #     if self.hand_type > other.hand_type:
-    #         return True
-    #     for a, b in zip(self.cards, other.cards):
-    #         if CARDVALUES[a] > CARDVALUES[b]:
-    #             return True
-    #     return False
+    def __gt__(self, other: "Hand") -> bool:
+        print(self.hand_type > other.hand_type)
+        if self.hand_type > other.hand_type:
+            print(self.hand_type, other.hand_type)
+            return True
+        elif self.hand_type < other.hand_type:
+            return False
+        for a, b in zip(self.cards, other.cards):
+            if CARDVALUES[a] > CARDVALUES[b]:
+                return True
+        return False
 
     def __lt__(self, other: "Hand") -> bool:
         if self.hand_type < other.hand_type:
+            print(self.hand_type, other.hand_type)
             return True
+        elif self.hand_type > other.hand_type:
+            return False
         for a, b in zip(self.cards, other.cards):
             if CARDVALUES[a] < CARDVALUES[b]:
                 return True
@@ -110,15 +118,17 @@ def test_hand_types():
 
 
 def test_compare_hands():
+    assert Hand("AAAAA") == Hand("AAAAA")
     assert Hand("AAAAA") > Hand("AKQJT")
     assert Hand("KKKKK") < Hand("AAAAA")
-    assert Hand("KKK22") < Hand("AAKK2")
+    assert Hand("KKK22") > Hand("AAKK2")
     assert Hand("KKK22") < Hand("AAAKK")
     assert Hand("QQQJA") > Hand("32T3K")
     assert Hand("KK677") > Hand("KTJJT")
     assert Hand("KTJJT") < Hand("KK667")
     assert Hand("T55J5") < Hand("QQQJA")
     assert Hand("KK677") < Hand("T55J5")
+    assert Hand("KTJJT") < Hand("QQQJA")
 
 
 def solve_part1(data: list[str]):
@@ -132,9 +142,10 @@ def solve_part1(data: list[str]):
         # hands.append({Hand(cards): bid})
     print(hands)
     print(types)
-    hands.sort()
-    hands.sort()
-    hands.sort()
+    # hands.sort()
+    # hands.sort()
+    # hands.sort()
+    hands = sorted(hands)
     types.sort()
     # hands = sorted(hands, key=lambda d: d.keys())
     # hands = sorted(hands, key=lambda d: d.keys())
