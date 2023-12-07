@@ -30,12 +30,31 @@ CARDVALUES = {
     "3": 3,
     "2": 2,
 }
+CARDVALUES_PART2 = {
+    "T": 10,
+    "J": 1,
+    "Q": 12,
+    "K": 13,
+    "A": 14,
+    "9": 9,
+    "8": 8,
+    "7": 7,
+    "6": 6,
+    "5": 5,
+    "4": 4,
+    "3": 3,
+    "2": 2,
+}
 
 
 class Hand:
-    def __init__(self, cards: str) -> None:
+    def __init__(self, cards: str, part: int = 1) -> None:
+        self.part = part
         self.cards = cards
-        self.hand_type: HandType = get_hand_type(cards)
+        if part == 1:
+            self.hand_type: HandType = get_hand_type(cards)
+        else:
+            self.hand_type: HandType = get_hand_type_part2(cards)
 
     # def __eq__(self, other: "Hand") -> bool:
     #     if self.hand_type != other.hand_type:
@@ -53,10 +72,17 @@ class Hand:
         elif self.hand_type < other.hand_type:
             return False
         for a, b in zip(self.cards, other.cards):
-            if CARDVALUES[a] > CARDVALUES[b]:
-                return True
-            if CARDVALUES[a] < CARDVALUES[b]:
-                return False
+            if self.part == 1:
+                if CARDVALUES[a] > CARDVALUES[b]:
+                    return True
+                if CARDVALUES[a] < CARDVALUES[b]:
+                    return False
+            else:
+                if CARDVALUES_PART2[a] > CARDVALUES_PART2[b]:
+                    return True
+                if CARDVALUES_PART2[a] < CARDVALUES_PART2[b]:
+                    return False
+
         return False
 
     def __lt__(self, other: "Hand") -> bool:
@@ -65,10 +91,16 @@ class Hand:
         elif self.hand_type > other.hand_type:
             return False
         for a, b in zip(self.cards, other.cards):
-            if CARDVALUES[a] < CARDVALUES[b]:
-                return True
-            if CARDVALUES[a] > CARDVALUES[b]:
-                return False
+            if self.part == 1:
+                if CARDVALUES[a] < CARDVALUES[b]:
+                    return True
+                if CARDVALUES[a] > CARDVALUES[b]:
+                    return False
+            else:
+                if CARDVALUES_PART2[a] < CARDVALUES_PART2[b]:
+                    return True
+                if CARDVALUES_PART2[a] > CARDVALUES_PART2[b]:
+                    return False
         return False
 
     def __hash__(self) -> int:
@@ -106,9 +138,37 @@ def get_hand_type(cards: str) -> HandType:
     return HandType.HIGHCARD
 
 
+def get_hand_type_part2(cards: str) -> HandType:
+    for c in cards:
+        if cards.count(c) + cards.count("J") == 5:
+            return HandType.FIVEKIND
+    for c in cards:
+        if cards.count(c) + cards.count("J") == 4:
+            return HandType.FOURKIND
+    for c in cards:
+        if cards.count(c) + cards.count("J") == 3:
+            for d in cards:
+                if d == c:
+                    continue
+                if cards.count(d) == 2:
+                    return HandType.FULLHOUSE
+            return HandType.THREEKIND
+    for c in cards:
+        if cards.count(c) + cards.count("J") == 2:
+            for d in cards:
+                if d == c:
+                    continue
+                if cards.count(d) == 3:
+                    return HandType.FULLHOUSE
+                if cards.count(d) == 2:
+                    return HandType.TWOPAIR
+            return HandType.ONEPAIR
+    return HandType.HIGHCARD
+
+
 def solve_part1(data: list[str]):
     hands = []
-    types = []
+
     for line in data:
         cards, bid = line.split()
         hands.append({"hand": Hand(cards), "bid": bid})
@@ -121,7 +181,17 @@ def solve_part1(data: list[str]):
 
 
 def solve_part2(data: list[str]):
-    return 0
+    hands: list[dict] = []
+
+    for line in data:
+        cards, bid = line.split()
+        hands.append({"hand": Hand(cards, part=2), "bid": bid})
+    hands = sorted(hands, key=lambda c: c["hand"])
+    total_winnings = 0
+    for rank, hand in enumerate(hands, start=1):
+        total_winnings += rank * int(hand["bid"])
+
+    return total_winnings
 
 
 def read_data(input_file: str):
