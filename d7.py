@@ -146,20 +146,26 @@ def get_hand_type_part2(cards: str) -> HandType:
         if cards.count(c) + cards.count("J") == 5:
             return HandType.FIVEKIND
     for c in cards:
+        if c == "J":
+            continue
         if cards.count(c) + cards.count("J") == 4:
             return HandType.FOURKIND
     for c in cards:
+        if c == "J":
+            continue
         if cards.count(c) + cards.count("J") == 3:
             for d in cards:
-                if d == c:
+                if d == c or d == "J":
                     continue
                 if cards.count(d) == 2:
                     return HandType.FULLHOUSE
             return HandType.THREEKIND
     for c in cards:
+        if c == "J":
+            continue
         if cards.count(c) + cards.count("J") == 2:
             for d in cards:
-                if d == c:
+                if d == c or d == "J":
                     continue
                 if cards.count(d) == 3:
                     return HandType.FULLHOUSE
@@ -230,6 +236,10 @@ def test_hand_types_part2():
     assert get_hand_type_part2("TTJ23") == HandType.THREEKIND
     assert get_hand_type_part2("TT223") == HandType.TWOPAIR
     assert get_hand_type_part2("AQTKJ") == HandType.ONEPAIR
+
+    assert get_hand_type_part2("J444T") == HandType.FOURKIND
+    assert get_hand_type_part2("JAAJA") == HandType.FIVEKIND
+    assert get_hand_type_part2("483JJ") == HandType.THREEKIND
 
 
 def test_compare_hands():
