@@ -104,6 +104,32 @@ def get_hand_type(cards: str) -> HandType:
     return HandType.HIGHCARD
 
 
+def solve_part1(data: list[str]):
+    hands = []
+    types = []
+    for line in data:
+        cards, bid = line.split()
+        hands.append({"hand": Hand(cards), "bid": bid})
+    print(hands)
+    hands = sorted(hands, key=lambda c: c["hand"])
+    total_winnings = 0
+    for rank, hand in enumerate(hands, start=1):
+        total_winnings += rank * int(hand["bid"])
+
+    return total_winnings
+
+
+def solve_part2(data: list[str]):
+    return 0
+
+
+def read_data(input_file: str):
+    with open(input_file, "r") as file:
+        data = file.readlines()
+    data = [line.strip() for line in data]
+    return data
+
+
 def test_hand_types():
     assert get_hand_type("AA234") == HandType.ONEPAIR
     assert get_hand_type("AA223") == HandType.TWOPAIR
@@ -131,48 +157,11 @@ def test_compare_hands():
     assert Hand("KTJJT") < Hand("QQQJA")
 
 
-def solve_part1(data: list[str]):
-    hands = []
-    types = []
-    for line in data:
-        cards, bid = line.split()
-        # hands.append({"hand": Hand(cards), "bid": bid})
-        hands.append(Hand(cards))
-        types.append(Hand(cards).hand_type)
-        # hands.append({Hand(cards): bid})
-    print(hands)
-    print(types)
-    # hands.sort()
-    # hands.sort()
-    # hands.sort()
-    hands = sorted(hands)
-    types.sort()
-    # hands = sorted(hands, key=lambda d: d.keys())
-    # hands = sorted(hands, key=lambda d: d.keys())
-    # hands = sorted(hands, key=lambda d: d.keys())
-    # hands = sorted(hands, key=lambda c: c["hand"])
-    # hands = sorted(hands, key=lambda c: c["hand"])
-    print(hands)
-    print(types)
-    return 0
-
-
-def solve_part2(data: list[str]):
-    return 0
-
-
-def read_data(input_file: str):
-    with open(input_file, "r") as file:
-        data = file.readlines()
-    data = [line.strip() for line in data]
-    return data
-
-
 def main():
     day = 7
 
     data = read_data(f"d{day}_input.txt")
-    data = read_data(f"d{day}_sample.txt")
+    # data = read_data(f"d{day}_sample.txt")
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
