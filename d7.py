@@ -140,6 +140,9 @@ def get_hand_type(cards: str) -> HandType:
 
 def get_hand_type_part2(cards: str) -> HandType:
     for c in cards:
+        if c == "J":
+            if cards.count(c) == 5:
+                return HandType.FIVEKIND
         if cards.count(c) + cards.count("J") == 5:
             return HandType.FIVEKIND
     for c in cards:
@@ -214,6 +217,21 @@ def test_hand_types():
     assert get_hand_type("AAAAA") == HandType.FIVEKIND
 
 
+def test_hand_types_part2():
+    assert get_hand_type_part2("JJJAA") == HandType.FIVEKIND
+    assert get_hand_type_part2("JJJJJ") == HandType.FIVEKIND
+    assert get_hand_type_part2("AJJJJ") == HandType.FIVEKIND
+    assert get_hand_type_part2("AAJJJ") == HandType.FIVEKIND
+    assert get_hand_type_part2("JAJAJ") == HandType.FIVEKIND
+    assert get_hand_type_part2("JJTTK") == HandType.FOURKIND
+    assert get_hand_type_part2("JJT33") == HandType.FOURKIND
+    assert get_hand_type_part2("JTT33") == HandType.FULLHOUSE
+    assert get_hand_type_part2("TTJ33") == HandType.FULLHOUSE
+    assert get_hand_type_part2("TTJ23") == HandType.THREEKIND
+    assert get_hand_type_part2("TT223") == HandType.TWOPAIR
+    assert get_hand_type_part2("AQTKJ") == HandType.ONEPAIR
+
+
 def test_compare_hands():
     # assert Hand("AAAAA") == Hand("AAAAA")
     assert Hand("AAAAA") > Hand("AKQJT")
@@ -248,4 +266,5 @@ def main():
 if __name__ == "__main__":
     test_hand_types()
     test_compare_hands()
+    test_hand_types_part2()
     main()
