@@ -56,15 +56,15 @@ class Hand:
         else:
             self.hand_type: HandType = get_hand_type_part2(cards)
 
-    # def __eq__(self, other: "Hand") -> bool:
-    #     if self.hand_type != other.hand_type:
-    #         print(self.hand_type, other.hand_type)
-    #         return False
-    #     for a, b in zip(self.cards, other.cards):
-    #         if CARDVALUES[a] != CARDVALUES[b]:
-    #             return False
+    def __eq__(self, other: "Hand") -> bool:
+        if self.hand_type != other.hand_type:
+            print(self.hand_type, other.hand_type)
+            return False
+        for a, b in zip(self.cards, other.cards):
+            if CARDVALUES[a] != CARDVALUES[b]:
+                return False
 
-    #     return True
+        return True
 
     def __gt__(self, other: "Hand") -> bool:
         if self.hand_type > other.hand_type:
@@ -236,14 +236,13 @@ def test_hand_types_part2():
     assert get_hand_type_part2("TTJ23") == HandType.THREEKIND
     assert get_hand_type_part2("TT223") == HandType.TWOPAIR
     assert get_hand_type_part2("AQTKJ") == HandType.ONEPAIR
-
     assert get_hand_type_part2("J444T") == HandType.FOURKIND
     assert get_hand_type_part2("JAAJA") == HandType.FIVEKIND
     assert get_hand_type_part2("483JJ") == HandType.THREEKIND
 
 
 def test_compare_hands():
-    # assert Hand("AAAAA") == Hand("AAAAA")
+    assert Hand("AAAAA") == Hand("AAAAA")
     assert Hand("AAAAA") > Hand("AKQJT")
     assert Hand("KKKKK") < Hand("AAAAA")
     assert Hand("KKK22") > Hand("AAKK2")
