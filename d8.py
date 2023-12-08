@@ -47,23 +47,13 @@ def solve_part2(data: list[str]):
         path_length += 1
         for i, node in enumerate(current_nodes):
             next_node = nodes[node][DIRECTION[instr]]
-            # if next_node in nodes_seen[i][0] and cycle_times[i] == 0:
-            #     cycle_times[i] = path_length
-            # else:
-            #     nodes_seen[i].append(next_node)
             if next_node.endswith("Z"):
                 cycle_times[i] = path_length + 1
             next_nodes.append(next_node)
-            # if next_node == start_nodes[i]:
-            #     cycle_times[i] = path_length
         if all([node.endswith("Z") for node in next_nodes]):
             return path_length
         if all([n > 0 for n in cycle_times]):
-            # print(cycle_times)
-            # print(nodes_seen)
-            print(math.lcm(*cycle_times))
-            return functools.reduce((lambda x, y: x * y), cycle_times)
-
+            return math.lcm(*cycle_times))
         current_nodes = next_nodes
         next_nodes = []
     return 0
