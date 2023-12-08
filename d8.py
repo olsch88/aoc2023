@@ -1,8 +1,9 @@
 import time
 
 
-def get_nodes(data:list [str])->dict[str,tuple[str,str]]:
-    
+def get_nodes(data: list[str]) -> dict[str, tuple[str, str]]:
+    pass
+
 
 def solve_part1(data: list[str]):
     return 0
