@@ -53,7 +53,7 @@ def solve_part2(data: list[str]):
         if all([node.endswith("Z") for node in next_nodes]):
             return path_length
         if all([n > 0 for n in cycle_times]):
-            return math.lcm(*cycle_times))
+            return math.lcm(*cycle_times)
         current_nodes = next_nodes
         next_nodes = []
     return 0
@@ -75,7 +75,7 @@ def main():
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
-    # print(solve_part1(data))
+    print(solve_part1(data))
     print(f"Time for part 1: {(time.perf_counter_ns()-start_time)/1000} ms")
 
     start_time = time.perf_counter_ns()
