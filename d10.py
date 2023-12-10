@@ -63,9 +63,28 @@ def solve_part1(data: list[str]):
             change_direction(data[new_pos[0]][new_pos[1]], direct)
             != DIRECTIONS["Nowhere"]
         ):
-            new_positions.append(new_pos)
-    print(new_positions)
-    return 0
+            new_positions.append((new_pos, direct))
+    path_length = 1
+    pos_1 = new_positions[0]
+    pos_2 = new_positions[1]
+    while True:
+        new_dir_1 = change_direction(data[pos_1[0][0]][pos_1[0][1]], pos_1[1])
+        new_dir_2 = change_direction(data[pos_2[0][0]][pos_2[0][1]], pos_2[1])
+        next_pos_1 = (
+            (pos_1[0][0] + new_dir_1[0], pos_1[0][1] + new_dir_1[1]),
+            new_dir_1,
+        )
+        next_pos_2 = (
+            (pos_2[0][0] + new_dir_2[0], pos_2[0][1] + new_dir_2[1]),
+            new_dir_2,
+        )
+
+        pos_1 = next_pos_1
+        pos_2 = next_pos_2
+
+        path_length += 1
+        if pos_1[0] == pos_2[0]:
+            return path_length
 
 
 def solve_part2(data: list[str]):
