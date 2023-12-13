@@ -30,19 +30,60 @@ def get_control_number_regex(springs: str) -> list[int]:
 
 
 def solve_part1(data: list[str]):
+    count_total = 0
     for line in data:
+        count_this_line = 0
         springs, control = line.split()
         control = [int(i) for i in control.split(",")]
         n_unknown = springs.count("?")
         n_known = springs.count("#")
         n_damaged = sum(control)
-        print(f"{n_unknown=} {n_known=} {n_damaged=}")
+        # print(f"{n_unknown=} {n_known=} {n_damaged=}")
         # get all posible permutations of needed fields
-        perms = product(".#", repeat=n_damaged - n_known)
+        perms = product(".#", repeat=n_unknown)
+        for perm in perms:
+            if perm.count("#") + n_known != n_damaged:
+                continue
+            new_springs = springs
+            for c in perm:
+                new_springs = new_springs.replace("?", c, 1)
+            if get_control_number(new_springs) == control:
+                count_this_line += 1
+        count_total += count_this_line
+    return count_total
 
 
 def solve_part2(data: list[str]):
-    pass
+    count_total = 0
+    for i, line in enumerate(data):
+        count_this_line = 0
+        springs, control = line.split()
+        print(f"before: {springs}")
+        springs = (springs + "?") * 5
+        springs = springs[:-1]  # remove trailing "?" after copying
+        print(f"after: {springs}")
+        control = [int(i) for i in control.split(",")]
+        print(f"before: {control}")
+        control = control * 5
+        print(f"after: {control}")
+
+        n_unknown = springs.count("?")
+        n_known = springs.count("#")
+        n_damaged = sum(control)
+        print(f"{n_unknown=} {n_known=} {n_damaged=}")
+        # get all posible permutations of needed fields
+        permutations = product(".#", repeat=n_unknown)
+        for perm in permutations:
+            if perm.count("#") + n_known != n_damaged:
+                continue
+            new_springs = springs
+            for c in perm:
+                new_springs = new_springs.replace("?", c, 1)
+            if get_control_number(new_springs) == control:
+                count_this_line += 1
+        count_total += count_this_line
+        print(f"{count_this_line=}")
+    return count_total
 
 
 def read_data(input_file: str):
@@ -66,12 +107,12 @@ def main():
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
     print(solve_part1(data))
-    print(f"Time for part 1: {(time.perf_counter_ns()-start_time)/1000} ms")
+    print(f"Time for part 1: {(time.perf_counter_ns()-start_time)/1000} µs")
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part2:")
     print(solve_part2(data))
-    print(f"Time for part 2: {(time.perf_counter_ns()-start_time)/1000} ms")
+    print(f"Time for part 2: {(time.perf_counter_ns()-start_time)/1000} µs")
 
 
 if __name__ == "__main__":
