@@ -57,20 +57,18 @@ def solve_part2(data: list[str]):
     count_total = 0
     for i, line in enumerate(data):
         count_this_line = 0
+
         springs, control = line.split()
-        print(f"before: {springs}")
         springs = (springs + "?") * 5
         springs = springs[:-1]  # remove trailing "?" after copying
-        print(f"after: {springs}")
+
         control = [int(i) for i in control.split(",")]
-        print(f"before: {control}")
         control = control * 5
-        print(f"after: {control}")
 
         n_unknown = springs.count("?")
         n_known = springs.count("#")
         n_damaged = sum(control)
-        print(f"{n_unknown=} {n_known=} {n_damaged=}")
+        # print(f"{n_unknown=} {n_known=} {n_damaged=}")
         # get all posible permutations of needed fields
         permutations = product(".#", repeat=n_unknown)
         for perm in permutations:
@@ -82,7 +80,6 @@ def solve_part2(data: list[str]):
             if get_control_number(new_springs) == control:
                 count_this_line += 1
         count_total += count_this_line
-        print(f"{count_this_line=}")
     return count_total
 
 
