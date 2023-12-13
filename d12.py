@@ -39,7 +39,7 @@ def solve_part1(data: list[str]):
         n_known = springs.count("#")
         n_damaged = sum(control)
         # print(f"{n_unknown=} {n_known=} {n_damaged=}")
-        # get all posible permutations of needed fields
+        # get all possible permutations of needed fields
         perms = product(".#", repeat=n_unknown)
         for perm in perms:
             if perm.count("#") + n_known != n_damaged:
@@ -57,21 +57,24 @@ def solve_part2(data: list[str]):
     count_total = 0
     for i, line in enumerate(data):
         count_this_line = 0
+        count_this_line_long = 0
         springs, control = line.split()
-        print(f"before: {springs}")
-        springs = (springs + "?") * 5
-        springs = springs[:-1]  # remove trailing "?" after copying
-        print(f"after: {springs}")
+
+        springs_long = springs + "?" + springs
+
         control = [int(i) for i in control.split(",")]
-        print(f"before: {control}")
-        control = control * 5
-        print(f"after: {control}")
+
+        control_long = control * 2
 
         n_unknown = springs.count("?")
         n_known = springs.count("#")
         n_damaged = sum(control)
+
+        n_unknown_long = springs_long.count("?")
+        n_known_long = springs_long.count("#")
+        n_damaged_long = sum(control_long)
         print(f"{n_unknown=} {n_known=} {n_damaged=}")
-        # get all posible permutations of needed fields
+        # get all possible permutations of needed fields
         permutations = product(".#", repeat=n_unknown)
         for perm in permutations:
             if perm.count("#") + n_known != n_damaged:
@@ -81,8 +84,21 @@ def solve_part2(data: list[str]):
                 new_springs = new_springs.replace("?", c, 1)
             if get_control_number(new_springs) == control:
                 count_this_line += 1
-        count_total += count_this_line
-        print(f"{count_this_line=}")
+
+        permutations = product(".#", repeat=n_unknown_long)
+
+        for perm in permutations:
+            if perm.count("#") + n_known_long != n_damaged_long:
+                continue
+            new_springs_long = springs_long
+            for c in perm:
+                new_springs_long = new_springs_long.replace("?", c, 1)
+            if get_control_number(new_springs_long) == control_long:
+                count_this_line_long += 1
+
+        arrangements = (count_this_line_long / count_this_line) ** 4 * count_this_line
+        count_total += arrangements
+
     return count_total
 
 
@@ -101,8 +117,8 @@ def test_count():
 def main():
     day = 12
 
-    # data = read_data(f"d{day}_input.txt")
-    data = read_data(f"d{day}_sample.txt")
+    data = read_data(f"d{day}_input.txt")
+    # data = read_data(f"d{day}_sample.txt")
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
