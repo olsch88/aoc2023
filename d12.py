@@ -2,9 +2,14 @@ import time
 from itertools import permutations, product
 import re
 
+search = re.compile(r"#+")
+
 
 def get_control_number(springs: str) -> list[int]:
-    """returns a list of the length of consecutive "#" """
+    """returns a list of the lengths of consecutive "#"
+    eg:
+
+    get_control_number("#.#.###")==[1,1,3]"""
     numbers = []
     current_count = 0
     for c in springs:
@@ -20,7 +25,7 @@ def get_control_number(springs: str) -> list[int]:
 
 def get_control_number_regex(springs: str) -> list[int]:
     """returns a list of the length of consecutive "#" """
-    numbers = [match.end() - match.start() for match in re.finditer(r"#+", springs)]
+    numbers = [match.end() - match.start() for match in search.finditer(springs)]
     return numbers
 
 
@@ -32,6 +37,8 @@ def solve_part1(data: list[str]):
         n_known = springs.count("#")
         n_damaged = sum(control)
         print(f"{n_unknown=} {n_known=} {n_damaged=}")
+        # get all posible permutations of needed fields
+        perms = product(".#", repeat=n_damaged - n_known)
 
 
 def solve_part2(data: list[str]):
