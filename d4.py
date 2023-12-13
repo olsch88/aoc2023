@@ -1,4 +1,5 @@
 import re
+import time
 
 
 def get_wins(data: list[str]) -> dict[int, int]:
@@ -56,10 +57,15 @@ def main():
     # data = read_data(f"d{day}_sample.txt")
     data = read_data(f"d{day}_input.txt")
 
+    start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
     print(solve_part1(data))
+    print(f"Time for part 1: {(time.perf_counter_ns()-start_time)/1000} µs")
+
+    start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part2:")
     print(solve_part2(data))
+    print(f"Time for part 2: {(time.perf_counter_ns()-start_time)/1000} µs")
 
 
 if __name__ == "__main__":
