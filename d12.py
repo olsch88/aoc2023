@@ -57,7 +57,6 @@ def solve_part2(data: list[str]):
     count_total = 0
     for i, line in enumerate(data):
         count_this_line = 0
-<<<<<<< HEAD
 
         springs, control = line.split()
         springs = (springs + "?") * 5
@@ -65,31 +64,12 @@ def solve_part2(data: list[str]):
 
         control = [int(i) for i in control.split(",")]
         control = control * 5
-=======
-        count_this_line_long = 0
-        springs, control = line.split()
-
-        springs_long = springs + "?" + springs
-
-        control = [int(i) for i in control.split(",")]
-
-        control_long = control * 2
->>>>>>> e4aba164d932da62fb6739bd9ae7ed67af107328
 
         n_unknown = springs.count("?")
         n_known = springs.count("#")
         n_damaged = sum(control)
-<<<<<<< HEAD
         # print(f"{n_unknown=} {n_known=} {n_damaged=}")
         # get all posible permutations of needed fields
-=======
-
-        n_unknown_long = springs_long.count("?")
-        n_known_long = springs_long.count("#")
-        n_damaged_long = sum(control_long)
-        print(f"{n_unknown=} {n_known=} {n_damaged=}")
-        # get all possible permutations of needed fields
->>>>>>> e4aba164d932da62fb6739bd9ae7ed67af107328
         permutations = product(".#", repeat=n_unknown)
 
         for perm in permutations:
@@ -101,24 +81,7 @@ def solve_part2(data: list[str]):
             if get_control_number(new_springs) == control:
                 count_this_line += 1
 
-<<<<<<< HEAD
         count_total += count_this_line
-=======
-        permutations = product(".#", repeat=n_unknown_long)
-
-        for perm in permutations:
-            if perm.count("#") + n_known_long != n_damaged_long:
-                continue
-            new_springs_long = springs_long
-            for c in perm:
-                new_springs_long = new_springs_long.replace("?", c, 1)
-            if get_control_number(new_springs_long) == control_long:
-                count_this_line_long += 1
-
-        arrangements = (count_this_line_long / count_this_line) ** 4 * count_this_line
-        count_total += arrangements
-
->>>>>>> e4aba164d932da62fb6739bd9ae7ed67af107328
     return count_total
 
 
