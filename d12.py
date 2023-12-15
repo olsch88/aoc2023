@@ -71,6 +71,7 @@ def solve_part2(data: list[str]):
         # print(f"{n_unknown=} {n_known=} {n_damaged=}")
         # get all posible permutations of needed fields
         permutations = product(".#", repeat=n_unknown)
+
         for perm in permutations:
             if perm.count("#") + n_known != n_damaged:
                 continue
@@ -79,6 +80,7 @@ def solve_part2(data: list[str]):
                 new_springs = new_springs.replace("?", c, 1)
             if get_control_number(new_springs) == control:
                 count_this_line += 1
+
         count_total += count_this_line
     return count_total
 
@@ -98,8 +100,8 @@ def test_count():
 def main():
     day = 12
 
-    # data = read_data(f"d{day}_input.txt")
-    data = read_data(f"d{day}_sample.txt")
+    data = read_data(f"d{day}_input.txt")
+    # data = read_data(f"d{day}_sample.txt")
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
