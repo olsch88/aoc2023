@@ -68,10 +68,6 @@ def find_horizontal_line_part2(pattern: list[str], old_find: int = -1) -> int:
                 ):
                     found_line = i
                     if count_differences(pattern[i - j], pattern[i + 1 + j]) == 1:
-                        # print(i, j)
-                        # print(pattern[i - j])
-                        # print(pattern[i + 1 + j])
-                        # print(found_line)
                         smudge_found = True
                 else:
                     found_line = -1
@@ -171,20 +167,18 @@ def solve_part2(data: list[str]):
         print(f"Pattern Nr {i}")
         hor_old = find_horizontal_line(pattern)
         hor = find_horizontal_line_part2(pattern, hor_old)
-        # print(f"{hor_old=}")
-        # print(f"{hor=}")
+
         total += 100 * max(hor, 0)
         if hor == -1:
             vert_old = find_vertical_line(pattern)
             vert = find_vertical_line_part2(pattern, vert_old)
-            # print(f"{vert_old=}")
-            # print(f"{vert=}")
+
             total += vert
         if hor == 0 and vert == 0:
             for line in pattern:
                 print(line)
         subtotal = max(vert, 0) + max(hor, 0) * 100
-        # print(f"{vert=}")
+
         print(f"{subtotal=}")
     return total
 
@@ -201,21 +195,18 @@ def solve_part2_rev(data: list[str]):
         print(f"Pattern Nr {i}")
         vert_old = find_vertical_line(pattern)
         vert = find_vertical_line_part2(pattern, vert_old)
-        # print(f"{vert_old=}")
-        # print(f"{vert=}")
+
         total += max(vert, 0)
         if vert == -1:
             hor_old = find_horizontal_line(pattern)
             hor = find_horizontal_line_part2(pattern, hor_old)
-            # print(f"{hor_old=}")
-            # print(f"{hor=}")
+
             total += hor * 100
         if hor == 0 and vert == 0:
             for line in pattern:
                 print(line)
         subtotal = max(vert, 0) + max(hor, 0) * 100
-        # print(f"{vert=}")
-        print(f"{subtotal=}")
+
     return total
 
 
