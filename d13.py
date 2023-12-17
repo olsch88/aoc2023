@@ -141,13 +141,12 @@ def solve_part1(data: list[str]):
     hor = 0
     # looking for horizontal lines
     for i, pattern in enumerate(patterns):
-        print(f"Pattern Nr {i}")
         hor = find_horizontal_line(pattern)
-        print(f"{hor=}")
+
         total += 100 * max(hor, 0)
         if hor == -1:
             vert = find_vertical_line(pattern)
-            print(f"{vert=}")
+
             total += vert
         if hor == 0 and vert == 0:
             for line in pattern:
@@ -164,7 +163,7 @@ def solve_part2(data: list[str]):
     for i, pattern in enumerate(patterns):
         vert = 0
         hor = 0
-        print(f"Pattern Nr {i}")
+
         hor_old = find_horizontal_line(pattern)
         hor = find_horizontal_line_part2(pattern, hor_old)
 
@@ -177,9 +176,6 @@ def solve_part2(data: list[str]):
         if hor == 0 and vert == 0:
             for line in pattern:
                 print(line)
-        subtotal = max(vert, 0) + max(hor, 0) * 100
-
-        print(f"{subtotal=}")
     return total
 
 
@@ -192,7 +188,7 @@ def solve_part2_rev(data: list[str]):
     for i, pattern in enumerate(patterns):
         vert = 0
         hor = 0
-        print(f"Pattern Nr {i}")
+
         vert_old = find_vertical_line(pattern)
         vert = find_vertical_line_part2(pattern, vert_old)
 
@@ -205,7 +201,6 @@ def solve_part2_rev(data: list[str]):
         if hor == 0 and vert == 0:
             for line in pattern:
                 print(line)
-        subtotal = max(vert, 0) + max(hor, 0) * 100
 
     return total
 
