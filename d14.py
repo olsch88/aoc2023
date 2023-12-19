@@ -87,16 +87,43 @@ def solve_part1(data: list[list[str]]):
 
 
 def solve_part2(data: list[list[str]]):
+    seen = []
+    seen_index = []
+    old_length = 0
+    search_index = 0
+    do_this = True
+    step = 0
+    offset = 0
+
     grid = extend_grid(data)
     for i in range(1000000000):
-        grid_before = copy.deepcopy(grid)
         tilt_north(grid)
         tilt_west(grid)
         tilt_south(grid)
         tilt_east(grid)
-        if grid == grid_before:
-            break
-    # pprint(grid)
+
+        old_length = len(seen)
+        if grid in seen:
+            pass
+            print(i)
+            idx = seen.index(grid)
+            print(f"Index: {seen_index[idx]}")
+        else:
+            seen.append(copy.deepcopy(grid))
+            seen_index.append(i)
+        if do_this:
+            if len(seen) == old_length:
+                do_this = False
+
+                offset = i
+                idx = seen.index(grid)
+
+                step = old_length - seen_index[idx]
+                search_index = (1000000000 - offset) % step
+
+        if search_index != 0:
+            if i == offset + step + search_index - 1:
+                break
 
     return calc_load(grid)
 
@@ -110,9 +137,9 @@ def read_data(input_file: str):
 
 def main():
     day = 14
-
-    # data = read_data(f"d{day}_input.txt")
-    data = read_data(f"d{day}_sample.txt")
+    print((1000000000 - 105) % 21)
+    data = read_data(f"d{day}_input.txt")
+    # data = read_data(f"d{day}_sample.txt")
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
