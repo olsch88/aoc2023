@@ -87,7 +87,18 @@ def solve_part1(data: list[list[str]]):
 
 
 def solve_part2(data: list[list[str]]):
-    return 0
+    grid = extend_grid(data)
+    for i in range(1000000000):
+        grid_before = copy.deepcopy(grid)
+        tilt_north(grid)
+        tilt_west(grid)
+        tilt_south(grid)
+        tilt_east(grid)
+        if grid == grid_before:
+            break
+    # pprint(grid)
+
+    return calc_load(grid)
 
 
 def read_data(input_file: str):
@@ -100,8 +111,8 @@ def read_data(input_file: str):
 def main():
     day = 14
 
-    data = read_data(f"d{day}_input.txt")
-    # data = read_data(f"d{day}_sample.txt")
+    # data = read_data(f"d{day}_input.txt")
+    data = read_data(f"d{day}_sample.txt")
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
