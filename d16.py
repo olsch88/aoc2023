@@ -2,10 +2,6 @@ import time
 from collections import deque
 from typing import NewType
 
-Position = NewType("Position", tuple[int, int])
-Direction = NewType("Direction", tuple[int, int])
-LightState = NewType("LightState", dict[str, tuple[int, int]])
-
 
 def traverse_maze(grid: list[str], start=((0, 0), (0, 1))):
     queue = deque()
