@@ -20,7 +20,7 @@ def get_valid_neighbors(grid: list[str]) -> dict[tuple, list]:
     return valid_neighbors
 
 
-def traverse_maze(grid: list[str], start: tuple = (0, 1), end=(22, 21)):
+def traverse_maze(grid: list[str], start: tuple = (0, 1), end=(22, 21), part2=False):
     hike_lengths = []
     visited = []
     neighbors = get_valid_neighbors(grid)
@@ -44,11 +44,11 @@ def traverse_maze(grid: list[str], start: tuple = (0, 1), end=(22, 21)):
             print(f"Found path with length {cur_len}")
             continue
         cur_len += 1
-        if grid[cur_pos[0]][cur_pos[1]] == ">" and cur_dir == (0, -1):
+        if grid[cur_pos[0]][cur_pos[1]] == ">" and cur_dir == (0, -1) and not part2:
             # we cant walk in this direction, dead end
             continue
 
-        if grid[cur_pos[0]][cur_pos[1]] == "v" and cur_dir == (-1, 0):
+        if grid[cur_pos[0]][cur_pos[1]] == "v" and cur_dir == (-1, 0) and not part2:
             # we cant walk in this direction, dead end
             continue
 
@@ -76,7 +76,11 @@ def solve_part1(data: list[str]):
 
 
 def solve_part2(data: list[str]):
-    return 0
+    width = len(data[0])
+    height = len(data)
+    lengths = traverse_maze(data, start=(0, 1), end=(height - 1, width - 2), part2=True)
+    # print(lengths)
+    return max(lengths)
 
 
 def read_data(input_file: str):
