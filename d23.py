@@ -8,13 +8,13 @@ neighbors = ((-1, 0), (1, 0), (0, -1), (0, 1))
 
 def get_valid_neighbors(grid: list[str]) -> dict[tuple, list]:
     valid_neighbors = dict()
-    valid_neighbors[(0, 1)] = [(1, 0)]
+    valid_neighbors[(0, 1)] = [(1, 1)]
     for row in range(1, len(grid) - 1):
         for col in range(1, len(grid[0]) - 1):
             neighs = []
             for neigh in neighbors:
                 if grid[row + neigh[0]][col + neigh[1]] != "#":
-                    neighs.append(neigh)
+                    neighs.append((row + neigh[0], col + neigh[1]))
             valid_neighbors[(row, col)] = neighs
     # pprint(valid_neighbors)
     return valid_neighbors
@@ -44,20 +44,21 @@ def traverse_maze(grid: list[str], start: tuple = (0, 1), end=(22, 21), part2=Fa
             print(f"Found path with length {cur_len}")
             continue
         cur_len += 1
-        if grid[cur_pos[0]][cur_pos[1]] == ">" and cur_dir == (0, -1) and not part2:
-            # we cant walk in this direction, dead end
-            continue
+        if not part2:
+            if grid[cur_pos[0]][cur_pos[1]] == ">" and cur_dir == (0, -1):
+                # we cant walk in this direction, dead end
+                continue
 
-        if grid[cur_pos[0]][cur_pos[1]] == "v" and cur_dir == (-1, 0) and not part2:
-            # we cant walk in this direction, dead end
-            continue
+            if grid[cur_pos[0]][cur_pos[1]] == "v" and cur_dir == (-1, 0):
+                # we cant walk in this direction, dead end
+                continue
 
         for neigh in neighbors[cur_pos]:
-            if (cur_pos[0] + neigh[0], cur_pos[1] + neigh[1]) not in visited:
+            if neigh not in visited:
                 queue.appendleft(
                     (
-                        (cur_pos[0] + neigh[0], cur_pos[1] + neigh[1]),
                         neigh,
+                        (neigh[0] - cur_pos[0], neigh[1] - cur_pos[1]),  # direction
                         cur_len,
                         visited[:],
                     )
@@ -103,7 +104,7 @@ def main():
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part2:")
-    print(solve_part2(data))
+    # print(solve_part2(data))
     print(f"Time for part 2: {(time.perf_counter_ns()-start_time)/1000} µs")
 
 
