@@ -69,6 +69,47 @@ def process_instruction(instruction, instructions: dict, part) -> bool:
     return False
 
 
+def process_instruction_part2(
+    instruction, instructions: dict, incoming_combinations=0, accepted=0
+) -> int:
+    # returns true if part is accepted, false otherwise
+    # print(instruction)
+
+    print(f"processing {instruction} with {incoming_combinations=}")
+    if instruction == "A":
+        return incoming_combinations
+    if instruction == "R":
+        return 0
+
+    workflow = instructions[instruction]
+
+    for flow in workflow:
+        if flow == "A":
+            return incoming_combinations
+        if flow == "R":
+            return 0
+        if flow in instructions.keys():
+            return process_instruction_part2(flow, instructions, incoming_combinations)
+
+        operator = operators[flow[1]]
+        parameter = flow[0]
+        check_value = int(flow.split(":")[0][2:])
+        destination = flow.split(":")[1]
+
+        # if operator(part[parameter], check_value):
+        #     return process_instruction(destination, instructions, part)
+        if operator == gt:
+            return process_instruction_part2(
+                destination, instructions, (4000 - check_value) * 400**3
+            )
+        if operator == lt:
+            return current_amount + process_instruction_part2(
+                destination, instructions, check_value * 400**3
+            )
+
+    return False
+
+
 def solve_part1(data: list[str]):
     parts = get_parts(data)
     instructions = get_instructions(data)
@@ -81,7 +122,12 @@ def solve_part1(data: list[str]):
 
 
 def solve_part2(data: list[str]):
-    return 0
+    # parts = get_parts(data)
+    instructions = get_instructions(data)
+
+    amount = process_instruction_part2("in", instructions)
+
+    return amount
 
 
 def read_data(input_file: str):
@@ -95,7 +141,7 @@ def main():
     day = 19
 
     data = read_data(f"d{day}_input.txt")
-    # data = read_data(f"d{day}_sample.txt")
+    data = read_data(f"d{day}_sample.txt")
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
