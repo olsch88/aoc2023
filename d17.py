@@ -135,7 +135,7 @@ def main():
     day = 17
 
     data = read_data(f"d{day}_input.txt")
-    # data = read_data(f"d{day}_sample.txt")
+    data = read_data(f"d{day}_sample2.txt")
 
     start_time = time.perf_counter_ns()
     print(f"Solution Day {day}, Part1:")
