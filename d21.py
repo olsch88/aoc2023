@@ -60,17 +60,61 @@ def walk_plot(grid: list[str], start_pos=(0, 0), max_step=6) -> int:
                     )
                 )
 
-    return len(visited_on_even_days)
+    if max_step % 2 == 0:
+        return len(visited_on_even_days)
+
+    return len(visited_on_odd_days)
+
+
+def get_differences(numbers: list[int]) -> list[int]:
+    diffs = []
+    for i in range(1, len(numbers)):
+        diffs.append(numbers[i] - numbers[i - 1])
+    return diffs
 
 
 def solve_part1(data: list[str]):
     start = get_start_position(data)
-    pos_count = walk_plot(data, start, max_step=5000)
+    pos_count = walk_plot(data, start, max_step=6)
     return pos_count
 
 
 def solve_part2(data: list[str]):
-    return 0
+    start = get_start_position(data)
+    numbers = dict()
+
+    for i in [10, 50, 1000]:
+        numbers[i] = walk_plot(data, start, max_step=i)
+    print(numbers)
+    a1, a2, a3 = numbers.keys()
+    b1, b2, b3 = numbers.values()
+    a = -(a1 * b2 - a1 * b3 - a2 * b1 + a2 * b3 + a3 * b1 - a3 * b2) / (
+        (a1 - a2) * (a1 - a3) * (a2 - a3)
+    )
+
+    b = (
+        a1**2 * b2
+        - a1**2 * b3
+        - a2**2 * b1
+        + a2**2 * b3
+        + a3**2 * b1
+        - a3**2 * b2
+    ) / ((a1 - a2) * (a1 - a3) * (a2 - a3))
+    c = (
+        a1**2 * a2 * b3
+        - a1**2 * a3 * b2
+        - a1 * a2**2 * b3
+        + a1 * a3**2 * b2
+        + a2**2 * a3 * b1
+        - a2 * a3**2 * b1
+    ) / ((a1 - a2) * (a1 - a3) * (a2 - a3))
+
+    y = a * 5000**2 + b * 5000 + c
+
+    print(a)
+    print(b)
+    print(c)
+    print(y)
 
 
 def read_data(input_file: str):
